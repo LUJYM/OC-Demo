@@ -63,22 +63,23 @@
 
 -(void)upOne{
     while (1) {
-//        线程安全,防止多次上传同一块区间
+        //        线程安全,防止多次上传同一块区间
         @synchronized (self) {
-            if (self.currentIndex < self.fileStreamer.fileFragments.count) {
-                NSData *data = [self.fileStreamer readDateOfFragment:self.fileStreamer.fileFragments[self.currentIndex]];
-//                在这里执行上传的操作
-//                [NSThread sleepForTimeInterval:0.02];
-//                NSLog(@"这是第%zd个上传----%@",self.currentIndex,[NSThread currentThread]);
-                self.currentIndex++;
-            } else {
-//                NSLog(@"时间间隔是%zd",(int)[[NSDate date] timeIntervalSinceDate:self.date1]);
-                [NSThread exit];
-                
+            @autoreleasepool {
+                if (self.currentIndex < self.fileStreamer.fileFragments.count) {
+                    NSData *data = [self.fileStreamer readDateOfFragment:self.fileStreamer.fileFragments[self.currentIndex]];
+                    //                在这里执行上传的操作
+                    [NSThread sleepForTimeInterval:0.02];
+                    NSLog(@"这是第%zd个上传----%@",self.currentIndex,[NSThread currentThread]);
+                    self.currentIndex++;
+                } else {
+                    //                NSLog(@"时间间隔是%zd",(int)[[NSDate date] timeIntervalSinceDate:self.date1]);
+                    [NSThread exit];
+                    
+                }
             }
         }
     }
-    
     
 }
 
