@@ -16,7 +16,7 @@
 @property(nonatomic,strong)NSThread *thread1;
 @property(nonatomic,strong)NSThread *thread2;
 @property(nonatomic,strong)NSThread *thread3;
-//@property(strong,nonatomic) NSDate *date1;
+@property(strong,nonatomic) NSDate *date1;
 @end
 
 
@@ -53,7 +53,7 @@
 #pragma mark  方法
 
 -(void)toUpData{
-//    self.date1 = [NSDate date];
+    self.date1 = [NSDate date];
     [self.thread1 start];
     [self.thread2 start];
     [self.thread3 start];
@@ -64,21 +64,25 @@
 -(void)upOne{
     while (1) {
         //        线程安全,防止多次上传同一块区间
-        @synchronized (self) {
+//        @synchronized (self) {
             @autoreleasepool {
                 if (self.currentIndex < self.fileStreamer.fileFragments.count) {
-                    NSData *data = [self.fileStreamer readDateOfFragment:self.fileStreamer.fileFragments[self.currentIndex]];
-                    //                在这里执行上传的操作
-                    [NSThread sleepForTimeInterval:0.02];
-                    NSLog(@"这是第%zd个上传----%@",self.currentIndex,[NSThread currentThread]);
-                    self.currentIndex++;
+                    if (self.fileStreamer.fileFragments[self.currentIndex].fragmentStatus == FileUpStateWaiting) {
+                        self.fileStreamer.fileFragments[self.currentIndex].fragmentStatus = FileUpStateLoading;
+                        NSData *data = [self.fileStreamer readDateOfFragment:self.fileStreamer.fileFragments[self.currentIndex]];
+                        //                在这里执行上传的操作
+                        [NSThread sleepForTimeInterval:0.2];
+                        NSLog(@"这是第%zd个上传----%@",self.currentIndex,[NSThread currentThread]);
+                        self.currentIndex++;
+                    }
+                    
                 } else {
-                    //                NSLog(@"时间间隔是%zd",(int)[[NSDate date] timeIntervalSinceDate:self.date1]);
+                    NSLog(@"时间间隔是%zd",(int)[[NSDate date] timeIntervalSinceDate:self.date1]);
                     [NSThread exit];
                     
                 }
             }
-        }
+//        }
     }
     
 }

@@ -58,10 +58,9 @@
 
 typedef NS_ENUM(NSInteger, FileUpState)
 {
-    FileUpStateStarting = 0,//开始状态
-    FileUpStateWaiting = 1,//加入到数组
-    FileUpStateLoading = 2,//正在上传
-    FileUpStateSuccess = 3//上传成功
+    FileUpStateWaiting = 0,//加入到数组
+    FileUpStateLoading = 1,//正在上传
+    FileUpStateSuccess = 2//上传成功
 };
 
 
@@ -70,5 +69,5 @@ typedef NS_ENUM(NSInteger, FileUpState)
 @property (nonatomic,copy)NSString          *fragmentId;    //片的唯一标识
 @property (nonatomic,assign)NSUInteger      fragmentSize;   //片的大小
 @property (nonatomic,assign)NSUInteger      fragementOffset;//片的偏移量
-@property (nonatomic,assign)BOOL            fragmentStatus; //上传状态 YES上传成功
+@property (nonatomic,assign)FileUpState            fragmentStatus; //上传状态 YES上传成功
 @end

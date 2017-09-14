@@ -127,7 +127,7 @@
     for (NSUInteger i = 0; i < chunks; i ++) {
         
         FileFragment *fFragment = [[FileFragment alloc] init];
-        fFragment.fragmentStatus = NO;
+        fFragment.fragmentStatus = FileUpStateWaiting;
         fFragment.fragmentId = [[self class] fileKey];
         fFragment.fragementOffset = i * offset;
         
@@ -223,7 +223,7 @@
         [self setFragmentId:[aDecoder decodeObjectForKey:@"fragmentId"]];
         [self setFragmentSize:[[aDecoder decodeObjectForKey:@"fragmentSize"] unsignedIntegerValue]];
         [self setFragementOffset:[[aDecoder decodeObjectForKey:@"fragementOffset"] unsignedIntegerValue]];
-        [self setFragmentStatus:[[aDecoder decodeObjectForKey:@"fragmentStatus"] boolValue]];
+        [self setFragmentStatus:[[aDecoder decodeObjectForKey:@"fragmentStatus"] integerValue]];
     }
     
     return self;
